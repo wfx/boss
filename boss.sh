@@ -105,19 +105,26 @@ echo "::1          localhost.localdomain    localhost" >> /mnt/etc/hosts
 arch-chroot /mnt/ ln -sf /usr/share/zoneinfo/Europe/Vienna /etc/localtime
 
 # Initramfs
-sed -i "/^HOOKS.*/ cHOOKS=\"base keyboard udev autodetect modconf block keymap encrypt btrfs filesystems\"" /mnt/etc/mkinitcpio.conf
+sed -i "/^HOOKS.*/ cHOOKS=\"base keyboard udev autodetect modconf block keymap btrfs filesystems\"" /mnt/etc/mkinitcpio.conf
 arch-chroot /mnt/ mkinitcpio -p linux
 
 # Boot manager
 arch-chroot /mnt/ bootctl --path=/boot install
-echo "title Arch Linux\nlinux /vmlinuz-linux\ninitrd /intel-ucode.img\ninitrd /initramfs-linux.img\noptions root=${D0[root]} rootflags=subvol=@" > /mnt/boot/loader/entries/arch.conf
-echo "default  arch.conf\ntimeout  3\nconsole-mode max\neditor   no" > /mnt/boot/loader/loader.conf
+
+# Fixme: This is ugly.
+echo "title Arch Linux" > /mnt/boot/loader/entries/arch.conf
+echo "linux /vmlinuz-linux" >> /mnt/boot/loader/entries/arch.conf
+echo "initrd /intel-ucode.img" >> /mnt/boot/loader/entries/arch.conf
+echo "initrd /initramfs-linux.img" >> /mnt/boot/loader/entries/arch.conf
+echo "options root=${D0[root]} rootflags=subvol=@" >> /mnt/boot/loader/entries/arch.conf
+
+echo "default  arch.conf" > /mnt/boot/loader/loader.conf
+echo "timeout  3" >> /mnt/boot/loader/loader.conf
+echo "console-mode max" >> /mnt/boot/loader/loader.conf
+echo "editor   no" >> /mnt/boot/loader/loader.conf
 
 # Set root password
 arch-chroot /mnt/ passwd
 
 # Final
 echo "umount -R /mnt"
-
-
-
