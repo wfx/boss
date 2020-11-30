@@ -1,5 +1,5 @@
 # BOSS
-BOSS is a installer for the "Best Operating System System"
+BOSS is a installer for the "Best Operating System System".
 Arch linux, what else.
 
 I wrote my repeating reinstalling steps into a simple script.
