@@ -117,7 +117,7 @@ echo "default  arch.conf\ntimeout  3\nconsole-mode max\neditor   no" > /mnt/boot
 arch-chroot /mnt/ passwd
 
 # Final
-umount -R /mnt
-reboot
+echo "umount -R /mnt"
+
 
 
