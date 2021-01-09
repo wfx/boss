@@ -1,0 +1,48 @@
+---
+Blockdevices:
+  Mapping:
+    Device_1:
+      # name: "nvme0n1"
+      # prefix: "p"
+      name: "vda"
+    Device_2:
+      name: "vdb"
+  Device_1:
+    Partition_1:
+      type: "esp"
+      size: "+260M"
+      format: "vfat32"
+      mount_point: "/boot/efi"
+    Partition_2:
+      type: "swap"
+      size: "+8GiB"
+      format: "swap"
+    Partition_3:
+      type: "root_x86-64"
+      size: "0"
+      label: "RooT"
+      crypt: "luks"
+      format: "btrfs"
+      Subvolumes:
+        - subvolume: "@root"
+          mount_option: "noatime,nodiratime,compress=zstd,space_cache"
+          mount_point: "/"
+        - subvolume: "@pkg"
+          mount_option: "noatime,nodiratime,compress=zstd,space_cache"
+          mount_point: "/var/cache/pacman/pkg"
+        - subvolume: "@snapshots"
+          mount_option: "noatime,nodiratime,compress=zstd,space_cache"
+          mount_point: "/.snapshots"
+        - subvolume: "@btrfs"
+          mount_option: "noatime,nodiratime,compress=zstd,space_cache"
+          mount_point: "/btrfs"
+  Device_2:
+    Partition_1:
+      type: "linux"
+      size: "0"
+      format: "btrfs"
+      label: "data"
+      Subvolumes:
+        - subvolume: "@data"
+          mount_option: "noatime,nodiratime,compress=zstd,space_cache"
+          mount_point: "/data"
