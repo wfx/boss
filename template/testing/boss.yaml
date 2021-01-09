@@ -24,7 +24,7 @@ Blockdevices:
       crypt: "luks"
       format: "btrfs"
       Subvolumes:
-        - subvolume: "@root"
+        - subvolume: "@"
           mount_option: "noatime,nodiratime,compress=zstd,space_cache"
           mount_point: "/"
         - subvolume: "@pkg"
