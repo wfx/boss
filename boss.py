@@ -158,7 +158,6 @@ class Application:
         self.blkd = Blockdevices(self.template.get('Blockdevices'))
 
     def run(self):
-        pass
         self.blkd.make_partition()
         self.blkd.make_filesystem()
         self.blkd.mount_partition()
