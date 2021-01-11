@@ -1,4 +1,16 @@
 ---
+System:
+  hostname: "boss"
+  system_clock: true
+  pacstrap: "linux base base-devel btrfs-progs intel-ucode neovim"
+  hooks: "base keyboard udev autodetect modconf block keymap btrfs filesystems"
+Localization:
+  time_zone: "Europe/Vienna"
+  location: "eu/at"
+  language: ["en", "de"]
+  keyboard: "de-latin1"
+User:
+  name: "boss"
 Blockdevices:
   Mapping:
     Device_1:
@@ -12,12 +24,17 @@ Blockdevices:
       type: "esp"
       size: "+260M"
       format: "vfat32"
-      mount_point: "/boot/efi"
+      mount_point: "/efi"
     Partition_2:
+      type: "boot"
+      size: "+512M"
+      format: "ext4"
+      mount_point: "/boot"
+    Partition_3:
       type: "swap"
       size: "+8GiB"
       format: "swap"
-    Partition_3:
+    Partition_4:
       type: "root_x86-64"
       size: "0"
       label: "RooT"
@@ -40,6 +57,7 @@ Blockdevices:
     Partition_1:
       type: "linux"
       size: "0"
+      crypt: "luks"
       format: "btrfs"
       label: "data"
       Subvolumes:
